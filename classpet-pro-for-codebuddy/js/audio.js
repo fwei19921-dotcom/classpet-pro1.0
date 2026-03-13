@@ -21,7 +21,16 @@ class GameAudio {
     // ==================== 背景音乐 ====================
     
     // 播放背景音乐
-    playBackgroundMusic() {
+    async playBackgroundMusic() {
+        // 恢复音频上下文（如果被浏览器挂起）
+        if (this.ctx && this.ctx.state === 'suspended') {
+            try {
+                await this.ctx.resume();
+            } catch (e) {
+                console.warn('无法恢复音频上下文:', e);
+            }
+        }
+
         // 如果有自定义音乐，优先播放自定义音乐
         if (this.customAudioElement) {
             this.playCustomMusic();
@@ -37,11 +46,12 @@ class GameAudio {
 
         this.isPlaying = true;
 
-        const playPromise = this.defaultAudioElement.play();
-        if (playPromise !== undefined) {
-            playPromise.catch(error => {
-                console.warn('背景音乐播放失败:', error);
-            });
+        try {
+            await this.defaultAudioElement.play();
+            console.log('背景音乐播放成功');
+        } catch (error) {
+            console.warn('背景音乐播放失败:', error);
+            this.isPlaying = false;
         }
     }
 

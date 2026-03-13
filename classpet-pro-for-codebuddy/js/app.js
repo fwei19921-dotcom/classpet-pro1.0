@@ -707,9 +707,14 @@ document.addEventListener('DOMContentLoaded', () => {
             // 关闭欢迎弹窗
             document.getElementById('welcomeModal').classList.remove('active');
 
-            // 启动背景音乐
-            if (window.ClassPet.bgm && window.ClassPet.bgm.audio.bgmEnabled && !window.ClassPet.bgm.audio.isPlaying) {
-                window.ClassPet.bgm.toggle();
+            // 启动背景音乐（首次点击时）
+            if (window.ClassPet.bgm && window.ClassPet.bgm.audio) {
+                // 恢复音频上下文（如果被挂起）
+                if (window.ClassPet.audio.ctx && window.ClassPet.audio.ctx.state === 'suspended') {
+                    window.ClassPet.audio.ctx.resume();
+                }
+                // 直接播放背景音乐
+                window.ClassPet.audio.playBackgroundMusic();
                 console.log('背景音乐已启动');
             }
 
