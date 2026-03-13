@@ -1,4 +1,4 @@
-// ClassPet Pro - 增强版游戏音效系统
+// ClassPet Pro - 增强版游戏音效系统 (v3 - 修复音频播放)
 
 class GameAudio {
     constructor() {
