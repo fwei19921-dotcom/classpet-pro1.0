@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>ClassPet Pro - 班级宠物养成</title>
+    <link rel="stylesheet" href="assets/css/style.css?v=14">
+    <link rel="stylesheet" href="assets/css/pet-adoption.css?v=2">
+    <script>console.log('ClassPet Pro v1.1.5 - 2026-03-12 - 班级名称更新为二年级一班');</script>
+</head>
+<body>
+    <!-- 欢迎弹窗 -->
+    <div class="modal active" id="welcomeModal" style="z-index: 9999;">
+        <div class="modal-content" style="text-align: center; padding: 40px;">
+            <h1 style="font-size: 32px; margin-bottom: 20px;">🎉 欢迎来到宠物乐园</h1>
+            <p id="welcomeClassName" style="font-size: 18px; color: #666; margin-bottom: 30px;">加载中...</p>
+            <button class="btn-primary" id="btnEnter" style="font-size: 20px; padding: 15px 40px;">进入乐园 🚀</button>
+        </div>
+    </div>
+
+    <div id="app">
+        <!-- 顶部标题栏 -->
+        <header class="header">
+            <h1 class="class-name">🌟 二年级一班宠物乐园</h1>
+            <div class="header-actions">
+                <button class="btn-style" id="btnAdoption">🏠 宠物认养</button>
+                <button class="btn-style" id="btnMusic" title="开关背景音乐">🎵 音乐</button>
+                <button class="btn-style" id="btnUploadMusic" title="自定义音乐">🎵 换音乐</button>
+                <button class="btn-teacher" id="btnTeacher">👨‍🏫 教师模式</button>
+            </div>
+        </header>
+
+        <!-- 宠物展示区 -->
+        <main class="pet-grid" id="petGrid">
+            <!-- 动态生成40个宠物卡片 -->
+        </main>
+
+        <!-- 学生详情弹窗 -->
+        <div class="modal" id="studentModal">
+            <div class="modal-content">
+                <span class="close-btn" id="closeModal">&times;</span>
+                <div class="student-detail">
+                    <div class="pet-display">
+                        <div class="pet-emoji" id="detailPetImage">🥚</div>
+                        <div class="evolution-effect" id="evolutionEffect"></div>
+                    </div>
+                    <h2 id="detailName">学生姓名</h2>
+                    <div class="score-section">
+                        <div class="current-score">
+                            <span class="score-label">当前积分</span>
+                            <span class="score-value" id="detailScore">0</span>
+                        </div>
+                        <div class="score-controls">
+                            <button class="btn-score btn-minus" data-value="-5">-5</button>
+                            <button class="btn-score btn-minus" data-value="-1">-1</button>
+                            <button class="btn-score btn-plus" data-value="+1">+1</button>
+                            <button class="btn-score btn-plus" data-value="+5">+5</button>
+                            <button class="btn-score btn-plus" data-value="+10">+10</button>
+                        </div>
+                    </div>
+                    <div class="progress-section">
+                        <div class="stage-info">
+                            <span id="currentStage">蛋</span>
+                            <span class="arrow">→</span>
+                            <span id="nextStage">幼崽</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progressFill"></div>
+                        </div>
+                        <div class="progress-text">
+                            还需 <span id="needScore">50</span> 分升级
+                        </div>
+                    </div>
+                    <div class="rewards-section">
+                        <h3>🏆 已获得奖励</h3>
+                        <div class="rewards-list" id="rewardsList">
+                            <span class="no-rewards">暂无奖励</span>
+                        </div>
+                    </div>
+
+                    <!-- 宠物互动区 -->
+                    <div class="pet-interaction-section">
+                        <h3>💕 宠物互动</h3>
+                        <div class="pet-status-bar" id="petStatusBar">
+                            <!-- 动态生成状态 -->
+                        </div>
+                        <div class="pet-status-text" id="petStatusText">
+                            <!-- 状态描述 -->
+                        </div>
+                        <div class="interaction-buttons">
+                            <button class="btn-interact" id="btnFeed" data-action="feed">
+                                <span class="emoji">🍖</span>
+                                <span class="label">喂食</span>
+                            </button>
+                            <button class="btn-interact" id="btnPlay" data-action="play">
+                                <span class="emoji">🎾</span>
+                                <span class="label">玩耍</span>
+                            </button>
+                            <button class="btn-interact" id="btnRest" data-action="rest">
+                                <span class="emoji">😴</span>
+                                <span class="label">休息</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="pet-actions">
+                        <button class="btn-custom-image" id="btnCustomImage">🎨 自定义形象</button>
+                        <button class="btn-adopt-pet" id="btnAdoptPet">🏠 认养宠物</button>
+                        <button class="btn-redeem" id="btnRedeem">🎁 兑换奖励</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 教师模式弹窗 -->
+        <div class="modal" id="teacherModal">
+            <div class="modal-content modal-small">
+                <h2>🔐 教师模式</h2>
+                <p style="text-align: center; margin: 10px 0 20px 0; color: #666;">请输入教师密码进入管理页面</p>
+                <div style="padding: 0 20px 20px;">
+                    <div style="margin-bottom: 15px;">
+                        <input type="password" id="teacherPassword" placeholder="请输入密码" style="width: 100%; padding: 12px 15px; font-size: 16px; border: 2px solid #e0e0e0; border-radius: 10px; outline: none; transition: border-color 0.3s;">
+                    </div>
+                    <div style="display: flex; gap: 10px;">
+                        <button id="btnCancelTeacher" style="flex: 1; padding: 12px; font-size: 16px; background: #f5f5f5; color: #666; border: none; border-radius: 10px; cursor: pointer;">取消</button>
+                        <button id="btnEnterAdmin" style="flex: 1; padding: 12px; font-size: 16px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 10px; cursor: pointer; box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);">确认进入</button>
+                    </div>
+                </div>
+                <div id="teacherError" style="color: #ff4757; text-align: center; margin: 10px 0 0 0; font-size: 14px; display: none;">密码错误，请重试</div>
+            </div>
+        </div>
+
+        <!-- 教师管理面板 -->
+        <div class="modal" id="adminModal">
+            <div class="modal-content modal-large">
+                <span class="close-btn" id="closeAdmin">&times;</span>
+                <h2>⚙️ 班级管理</h2>
+                <div class="admin-tabs">
+                    <button class="tab-btn active" data-tab="students">👥 学生管理</button>
+                    <button class="tab-btn" data-tab="settings">🔧 进化设置</button>
+                    <button class="tab-btn" data-tab="rewards">🎁 奖励设置</button>
+                    <button class="tab-btn" data-tab="data">💾 数据管理</button>
+                </div>
+                <div class="tab-content" id="tabContent">
+                    <!-- 动态内容 -->
+                </div>
+            </div>
+        </div>
+
+        <!-- 兑换奖励弹窗 -->
+        <div class="modal" id="redeemModal">
+            <div class="modal-content">
+                <span class="close-btn" id="closeRedeem">&times;</span>
+                <h2>🎁 兑换奖励</h2>
+                <div class="redeem-list" id="redeemList">
+                    <!-- 动态生成奖励列表 -->
+                </div>
+            </div>
+        </div>
+
+        <!-- 进化庆祝弹窗 -->
+        <div class="modal celebration" id="celebrationModal">
+            <div class="celebration-content">
+                <div class="celebration-pet" id="celebrationPet"></div>
+                <h1 class="celebration-title">🎉 恭喜进化！</h1>
+                <p class="celebration-text" id="celebrationText"></p>
+                <button class="btn-celebrate" id="btnCelebrate">太棒了！</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 宠物认养中心弹窗 -->
+    <div class="modal adoption-center" id="adoptionCenterModal">
+        <div class="modal-content adoption-center">
+            <span class="close-btn">&times;</span>
+            <h2>🏠 宠物认养中心</h2>
+
+            <!-- 我的宠物 -->
+            <div class="my-pet-info">
+                <h3>当前宠物</h3>
+                <div class="current-pet-card" id="currentPetCard"></div>
+                <p class="my-pet-stats">积分: <span id="myScore">0</span></p>
+            </div>
+
+            <!-- 筛选 -->
+            <div class="filters">
+                <button class="filter-btn active" data-style="all">全部</button>
+                <button class="filter-btn" data-style="cute">萌宠风</button>
+                <button class="filter-btn" data-style="fantasy">幻想风</button>
+                <button class="filter-btn" data-style="pixel">像素风</button>
+                <button class="filter-btn" data-style="scifi">科幻风</button>
+                <button class="filter-btn" data-style="china">国潮风</button>
+            </div>
+
+            <!-- 宠物库 -->
+            <div class="pet-library-grid" id="petLibraryGrid"></div>
+        </div>
+    </div>
+
+    <!-- 自定义图片上传弹窗 -->
+    <div class="modal" id="customImageModal">
+        <div class="modal-content custom-upload">
+            <span class="close-btn">&times;</span>
+            <h2>🎨 自定义宠物形象</h2>
+
+            <div class="upload-info">
+                <p>当前宠物：<span id="uploadPetName">小猫咪</span></p>
+                <p>默认形象：<span id="uploadCurrentEmoji">🐱</span></p>
+            </div>
+
+            <!-- 自定义图片开关 -->
+            <div class="toggle-container">
+                <span>启用自定义图片</span>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="customImageToggle">
+                    <span class="slider"></span>
+                </label>
+            </div>
+
+            <!-- 图片上传区域 -->
+            <div class="image-upload-area">
+                <div class="upload-placeholder" id="uploadPlaceholder">
+                    <span>📷</span>
+                    <p>点击或拖拽上传图片</p>
+                    <p class="hint">支持 JPG、PNG，建议尺寸 512x512</p>
+                </div>
+                <img id="currentCustomImage" class="custom-preview" hidden>
+                <input type="file" id="customImageInput" accept="image/*" hidden>
+            </div>
+
+            <!-- 操作按钮 -->
+            <div class="upload-actions">
+                <button class="btn-secondary" id="btnRemoveImage">删除自定义图片</button>
+                <button class="btn-primary" id="btnSaveImage">保存</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 音乐上传弹窗 -->
+    <div class="modal" id="musicUploadModal">
+        <div class="modal-content custom-upload">
+            <span class="close-btn" id="closeMusicUpload">&times;</span>
+            <h2>🎵 自定义背景音乐</h2>
+
+            <div class="upload-info">
+                <p>当前音乐：<span id="currentMusicName">默认音乐</span></p>
+            </div>
+
+            <!-- 音乐上传区域 -->
+            <div class="music-upload-area">
+                <div class="upload-placeholder" id="musicUploadPlaceholder">
+                    <span>🎵</span>
+                    <p>点击或拖拽上传音乐文件</p>
+                    <p class="hint">支持 MP3、WAV、OGG格式，最大10MB</p>
+                </div>
+                <input type="file" id="musicInput" accept="audio/*" hidden>
+            </div>
+
+            <!-- 操作按钮 -->
+            <div class="upload-actions">
+                <button class="btn-secondary" id="btnRemoveMusic">移除自定义音乐</button>
+                <button class="btn-primary" id="btnSaveMusic">保存</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/data-manager.js"></script>
+    <script src="js/pets.js"></script>
+    <script src="js/audio.js"></script>
+    <script src="js/effects.js"></script>
+    <script src="js/feishu-sync.js"></script>
+    <script src="js/pet-database.js"></script>
+    <script src="js/pet-adoption.js"></script>
+    <script src="js/pet-display.js"></script>
+    <script src="js/pet-custom-image.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>

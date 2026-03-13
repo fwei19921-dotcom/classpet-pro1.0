@@ -1,0 +1,47 @@
+name: Pages
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - '**.html'
+      - '**.js'
+      - '**.css'
+      - '**.md'
+  
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Setup
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Build
+        run: |
+          echo "构建 GitHub Pages..."
+          ls -la
+          echo "HTML 文件："
+          find . -name "*.html"
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
