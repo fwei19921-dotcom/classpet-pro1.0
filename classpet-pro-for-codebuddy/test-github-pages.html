@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GitHub Pages 快速测试</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+            padding: 50px;
+            min-height: 100vh;
+        }
+        .test-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(255,255,255,0.95);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+            color: #333;
+        }
+        h1 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 32px;
+        }
+        h2 {
+            color: #764ba2;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+        .status-box {
+            margin: 20px 0;
+            padding: 20px;
+            border-radius: 10px;
+            background: #f5f5f5;
+        }
+        .url-list {
+            margin: 30px 0;
+            display: grid;
+            gap: 15px;
+        }
+        .url-item {
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: transform 0.2s;
+        }
+        .url-item:hover {
+            transform: scale(1.05);
+        }
+        .error-box {
+            background: #ffebee;
+            border-left: 4px solid #ff5252;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+        .loading {
+            animation: pulse 1s infinite;
+        }
+        @keyframes pulse {
+            0% { opacity: 0.5; }
+            50% { opacity: 1; }
+            100% { opacity: 0.5; }
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>🏆 GitHub Pages 部署测试</h1>
+        <h2>ClassPet Pro v1.2.0</h2>
+        
+        <div class="status-box">
+            <h3>🔍 部署状态检查</h3>
+            <p>请访问 GitHub 仓库设置配置 GitHub Pages：</p>
+            <p><strong>https://github.com/fwei19921-dotcom/classpet-pro1.0/settings/pages</strong></p>
+        </div>
+        
+        <div class="url-list">
+            <a href="https://fwei19921-dotcom.github.io/classpet-pro1.0/deploy-test.html" class="url-item">
+                🔧 部署测试页面
+            </a>
+            <a href="https://fwei19921-dotcom.github.io/classpet-pro1.0/index.html" class="url-item">
+                📺 大屏展示端
+            </a>
+            <a href="https://fwei19921-dotcom.github.io/classpet-pro1.0/admin.html" class="url-item">
+                📱 管理端
+            </a>
+            <a href="https://fwei19921-dotcom.github.io/classpet-pro1.0/mobile.html" class="url-item">
+                🐾 手机学生端
+            </a>
+        </div>
+        
+        <div class="error-box">
+            <h3>⚠️ 如果仍然 404...</h3>
+            <p>请执行以下操作：</p>
+            <ol>
+                <li><strong>GitHub Pages 配置</strong>: 确保已配置 main 分支和 root 目录</li>
+                <li><strong>等待几分钟</strong>: 首次部署需要 1-5 分钟</li>
+                <li><strong>刷新页面</strong>: Ctrl+F5 强制刷新</li>
+                <li><strong>检查缓存</strong>: 清除浏览器缓存</li>
+                <li><strong>部署日志</strong>: 查看 GitHub Actions 部署状态</li>
+            </ol>
+        </div>
+        
+        <div class="status-box">
+            <h3>✅ GitHub Pages 要求</h3>
+            <ul>
+                <li>✅ index.html 在根目录</li>
+                <li>✅ 使用相对路径引用资源</li>
+                <li>✅ 无需后端服务</li>
+                <li>✅ GitHub Actions 部署配置</li>
+                <li>✅ .github/workflows/static.yml 文件</li>
+            </ul>
+        </div>
+        
+        <p class="loading">🏗️ GitHub Pages 部署可能需要几分钟时间...</p>
+    </div>
+</body>
+</html>
