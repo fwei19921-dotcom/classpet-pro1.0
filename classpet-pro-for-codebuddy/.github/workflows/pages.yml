@@ -9,6 +9,13 @@ on:
       - '**.js'
       - '**.css'
       - '**.md'
+      - '**.mp3'
+      - '**.wav'
+      - '**.ogg'
+      - '**.png'
+      - '**.jpg'
+      - '**.gif'
+      - '**.svg'
   
   workflow_dispatch:
 
